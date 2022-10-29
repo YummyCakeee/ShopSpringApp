@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.nikita.spring.ShopSpringApp.dao.UserDAO;
 import ru.nikita.spring.ShopSpringApp.models.User;
 import ru.nikita.spring.ShopSpringApp.repositories.UsersRepository;
+import ru.nikita.spring.ShopSpringApp.util.UserSortMode;
 
 import java.util.List;
 
@@ -21,8 +22,14 @@ public class UsersService {
         this.userDAO = userDAO;
     }
 
-    public List<User> findAll() {
-        return usersRepository.findAll();
+    public List<User> findAll(UserSortMode userSortMode) {
+        return switch (userSortMode) {
+            case ID -> usersRepository.findAllByOrderByIdAsc();
+            case FIRST_NAME -> usersRepository.findAllByOrderByFirstNameAsc();
+            case SECOND_NAME -> usersRepository.findAllByOrderBySecondNameAsc();
+            case DATE_OF_BIRTH -> usersRepository.findAllByOrderByDateOfBirthAsc();
+            default -> usersRepository.findAll();
+        };
     }
 
     public User findById(int id) {

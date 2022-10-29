@@ -12,6 +12,7 @@ import ru.nikita.spring.ShopSpringApp.services.UsersService;
 import ru.nikita.spring.ShopSpringApp.util.FieldErrorsData;
 import ru.nikita.spring.ShopSpringApp.util.ItemNotFoundException;
 import ru.nikita.spring.ShopSpringApp.util.ResponseData;
+import ru.nikita.spring.ShopSpringApp.util.UserSortMode;
 
 import javax.validation.Valid;
 import java.util.Objects;
@@ -32,9 +33,14 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<ResponseData> getAllUsers(
-            @RequestParam(name = "sort", required = false) String sort) {
+            @RequestParam(name = "sort",
+                    required = false, defaultValue = "NONE") String sortMode) {
+        UserSortMode userSortMode = UserSortMode.NONE;
+        if (Objects.nonNull(sortMode)) {
+            userSortMode = UserSortMode.valueOf(sortMode.toUpperCase());
+        }
         ResponseData response = new ResponseData(
-                usersService.findAll().stream().map(this::convertToUserDTO).collect(Collectors.toList()),
+                usersService.findAll(userSortMode).stream().map(this::convertToUserDTO).collect(Collectors.toList()),
                 true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
