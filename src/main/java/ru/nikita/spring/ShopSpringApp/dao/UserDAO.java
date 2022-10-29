@@ -17,7 +17,7 @@ public class UserDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<User> getAllUsers() {
-        return jdbcTemplate.query("SELECT * FROM user", new BeanPropertyRowMapper<> (User.class));
+    public List<User> findAll() {
+        return jdbcTemplate.query("SELECT * FROM shop_user", new BeanPropertyRowMapper<> (User.class));
     }
 }
