@@ -64,7 +64,7 @@ public class CategoryController {
         Category category = convertToCategory(categoryDTO);
         category.setId(0);
         categoriesService.save(convertToCategory(categoryDTO));
-        return new ResponseEntity<>(new ResponseData(true), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseData(true), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
