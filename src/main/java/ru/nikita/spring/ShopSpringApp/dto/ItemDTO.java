@@ -1,7 +1,15 @@
 package ru.nikita.spring.ShopSpringApp.dto;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
+
 public class ItemDTO {
+
+    @NotEmpty(message = "У товара должно быть название")
+    @Max(value = 100, message = "Название товара не должно превышать 100 символов")
     private String name;
+    @Positive(message = "Цена должна быть положительным числом")
     private double price;
     private String photo;
     private CategoryDTO category;
