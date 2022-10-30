@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseData> getAllUsers(
+    public ResponseEntity<ResponseData> findAllUsers(
             @RequestParam(name = "sort",
                     required = false, defaultValue = "NONE") String sortMode) {
         UserSortMode userSortMode = UserSortMode.NONE;
@@ -58,14 +58,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseData> addUser(@RequestBody @Valid UserDTO userDTO,
+    public ResponseEntity<ResponseData> saveUser(@RequestBody @Valid UserDTO userDTO,
                                                 BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String errorsData = FieldErrorsData.getErrorsData(bindingResult.getFieldErrors());
             return  new ResponseEntity<>(new ResponseData(false, errorsData), HttpStatus.BAD_REQUEST);
         }
         usersService.save(convertToUser(userDTO));
-        return new ResponseEntity<>(new ResponseData(true), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseData(true), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
